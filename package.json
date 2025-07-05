@@ -9,8 +9,10 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare"
   },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  },
   "dependencies": {
-    "@prisma/client": "^6.11.0",
     "@prisma/nuxt": "^0.3.0",
     "jsonwebtoken": "^9.0.2",
     "nuxt": "^3.17.5",
@@ -20,5 +22,8 @@
   },
   "devDependencies": {
     "@types/jsonwebtoken": "^9.0.10"
+  },
+  "optionalDependencies": {
+    "@rollup/rollup-linux-x64-gnu": "*"
   }
 }
