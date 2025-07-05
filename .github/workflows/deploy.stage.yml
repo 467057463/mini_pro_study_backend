@@ -53,7 +53,7 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.DEPLOY_KEY }}
           source: ${{ github.sha }}.tar.gz
-          target: /var/www/mini_pro_study_backend/artifacts
+          target: /var/www/mini_pro_study_backend_stage/artifacts
 
   activate-release:
     name: "Activate release"
@@ -63,8 +63,8 @@ jobs:
       - name: Activate Release
         uses: appleboy/ssh-action@master
         env:
-          RELEASE_PATH: /var/www/mini_pro_study_backend/releases/${{ github.sha }}
-          ACTIVE_RELEASE_PATH: /var/www/mini_pro_study_backend/live
+          RELEASE_PATH: /var/www/mini_pro_study_backend_stage/releases/${{ github.sha }}
+          ACTIVE_RELEASE_PATH: /var/www/mini_pro_study_backend_stage/live
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
@@ -94,8 +94,8 @@ jobs:
           key: ${{ secrets.DEPLOY_KEY }}
           port: "22"
           script: |
-            cd /var/www/mini_pro_study_backend/releases && ls -t -1 | tail -n +4 | xargs rm -rf
-            cd /var/www/mini_pro_study_backend/artifacts && rm -rf *
+            cd /var/www/mini_pro_study_backend_stage/releases && ls -t -1 | tail -n +4 | xargs rm -rf
+            cd /var/www/mini_pro_study_backend_stage/artifacts && rm -rf *
       - uses: geekyeggo/delete-artifact@v1
         with:
           name: app-artifacts
