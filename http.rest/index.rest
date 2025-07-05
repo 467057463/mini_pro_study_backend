@@ -1,0 +1,4 @@
+### 
+http://localhost:3000/api/test
+
+// {"session_key":"cRlkOD8Sj+0viEMT5ZsdQg==","openid":"oCgld5Yo1nyWf5fuHEyaIxL8sryo"}
