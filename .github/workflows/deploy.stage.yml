@@ -35,6 +35,12 @@ jobs:
           cp .env .output/server/.env
           cp -r prisma .output/server
           tar -czf "${GITHUB_SHA}".tar.gz .output ./ecosystem.stage.config.cjs
+          
+      - name: Store app-artifacts for distribution
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-artifacts
+          path: ${{ github.sha }}.tar.gz
 
   prepare-release-on-servers:
     needs: create-deployment-artifacts
