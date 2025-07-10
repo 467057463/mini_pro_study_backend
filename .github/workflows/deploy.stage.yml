@@ -118,6 +118,6 @@ jobs:
           script: |
             cd /var/www/mini_pro_study_backend_stage/releases && ls -t -1 | tail -n +4 | xargs rm -rf
             cd /var/www/mini_pro_study_backend_stage/artifacts && rm -rf *
-      - uses: geekyeggo/delete-artifact@v1
+      - uses: geekyeggo/delete-artifact@v5
         with:
           name: app-artifacts
