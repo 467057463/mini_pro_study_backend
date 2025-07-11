@@ -11,24 +11,17 @@ datasource db {
 }
 
 model WxToken {
-  id           Int    @id @default(autoincrement())
+  id           Int      @id @default(autoincrement())
   access_token String
   expires_in   Int
+  created_at   DateTime @default(now()) @map("createAt")
+  updated_at   DateTime @updatedAt @map("updatedAt")
 }
 
 model User {
-  id          Int    @id @default(autoincrement())
-  openid      String @unique
+  id          Int      @id @default(autoincrement())
+  openid      String   @unique
   session_key String
-
-  posts Post[]
-}
-
-model Post {
-  id        Int     @id @default(autoincrement())
-  title     String
-  content   String?
-  published Boolean @default(false)
-  author    User    @relation(fields: [authorId], references: [id])
-  authorId  Int
+  created_at  DateTime @default(now()) @map("createAt")
+  updated_at  DateTime @updatedAt @map("updatedAt")
 }
