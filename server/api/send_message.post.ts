@@ -1,4 +1,6 @@
-export default defineEventHandler(async () => {
+export default defineEventHandler(async (event) => {
+  const body = await readBody(event)
+  console.log(body)
   const res = await sendMessage({
     template_id: 'TtI92qcaZkzC7Da_i6A3Vxz2UNU72QmM_X-NGE2XHTY',
     page: 'message/index?test=1111',

@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `post` MODIFY `view` INTEGER NOT NULL DEFAULT 0;

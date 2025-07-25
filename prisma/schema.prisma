@@ -14,14 +14,35 @@ model WxToken {
   id           Int      @id @default(autoincrement())
   access_token String
   expires_in   Int
-  created_at   DateTime @default(now()) @map("createAt")
-  updated_at   DateTime @updatedAt @map("updatedAt")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
 
 model User {
   id          Int      @id @default(autoincrement())
   openid      String   @unique
   session_key String
-  created_at  DateTime @default(now()) @map("createAt")
-  updated_at  DateTime @updatedAt @map("updatedAt")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  order       Order[]
+  Post        Post[]
+}
+
+model Order {
+  id         String   @id @default(uuid())
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  customer   User     @relation(fields: [customerId], references: [id])
+  customerId Int
+}
+
+model Post {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  title     String
+  content   String
+  view      Int      @default(0)
+  author    User     @relation(fields: [authorId], references: [id])
+  authorId  Int
 }

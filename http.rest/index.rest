@@ -1,4 +1,32 @@
+
+@username_test = {{loginName.response.body.$.data.name}}
+@token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzUzNDI3MTE3LCJleHAiOjE3NTYwMTkxMTd9.ff04KXjdCgkT90vprpNvldaVz-aFwS-UZpWlKl0jCmM"
+
 ### 
-http://localhost:3000/api/test
+# @name loginName
+GET {{hostname}}/api/revice_message
+
+###
+POST {{hostname}}/api/send_message
+Content-Type: application/json
+
+{
+  "username": "{{username_test}}",
+  "guid": "{{$guid}}",
+  "random": "{{$randomInt 1 5}}",
+  "password": "{{password}}"
+}
+
+###
+GET {{hostname}}/api/test?test={{username_test}}
+
+
+### 新建订单
+POST {{hostname}}/api/order/create
+
+{
+  "customerId": 1
+}
+
 
 // {"session_key":"cRlkOD8Sj+0viEMT5ZsdQg==","openid":"oCgld5Yo1nyWf5fuHEyaIxL8sryo"}
