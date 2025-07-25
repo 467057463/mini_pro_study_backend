@@ -6,11 +6,11 @@
 
 */
 -- AlterTable
-ALTER TABLE `user` DROP COLUMN `createAt`,
+ALTER TABLE `User` DROP COLUMN `createAt`,
     ADD COLUMN `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3);
 
 -- AlterTable
-ALTER TABLE `wxtoken` DROP COLUMN `createAt`,
+ALTER TABLE `WxToken` DROP COLUMN `createAt`,
     ADD COLUMN `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3);
 
 -- CreateTable
