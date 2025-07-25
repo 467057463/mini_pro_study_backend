@@ -6,7 +6,7 @@ function generateOrder(){
   return Array.from({length: 100}).map(() => {
     return {
       title: faker.book.title(),
-      content: faker.string.numeric(100),
+      content: faker.food.description(),
       view: faker.number.int({min: 1, max: 50}),
       authorId: 1
     }
