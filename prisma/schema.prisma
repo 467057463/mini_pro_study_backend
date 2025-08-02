@@ -25,15 +25,24 @@ model User {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   order       Order[]
-  Post        Post[]
+  post        Post[]
 }
 
 model Order {
-  id         String   @id @default(uuid())
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-  customer   User     @relation(fields: [customerId], references: [id])
+  id         String      @id @default(uuid())
+  price      Int         @default(0)
+  status     orderStatus @default(normal)
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  customer   User        @relation(fields: [customerId], references: [id])
   customerId Int
+}
+
+enum orderStatus {
+  normal
+  inProduction
+  dispatching
+  success
 }
 
 model Post {
@@ -45,4 +54,19 @@ model Post {
   view      Int      @default(0)
   author    User     @relation(fields: [authorId], references: [id])
   authorId  Int
+  status    PostStatus @default(draft)
+
+  @@fulltext([title])
+  @@fulltext([title, content])
+}
+
+enum PostStatus {
+  draft
+  official
+}
+
+model Comment {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

@@ -1,72 +1,31 @@
 export default defineEventHandler(async (event) => {
-  // const users = await prisma.post.update({
-  //   where: {
-  //     id: "03235fd8-a2dc-463b-acf2-d28e6edeef50"
-  //   },
-  //   data: {
-  //     view: {
-  //       increment: 1
-  //     }
-  //   }
-  // })
-  // const users = await prisma.post.findUnique({
-  //   where: {
-  //     id: "03235fd8-a2dc-463b-acf2-d28e6edeef50"
-  //   },
-  //   // select: {
-  //   //   title: true
-  //   // },
-  //   omit: {
-  //     title: true
-  //   },
-  //   include: {
-  //     author: {
-  //       select: {
-  //         id: true
-  //       }
-  //     }
-  //   }
-  // })
-  // const users = await prisma.post.findMany({
-  //   where: {
-  //     OR: [
-  //       {
-  //         title: {
-  //           startsWith: "中"
-  //         }
-  //       },
-  //       {
-  //         title: {
-  //           startsWith: "日"
-  //         },
-  //         view: {
-  //           gt: 40
-  //         }
-  //       }
-  //     ]
-  //   }
-  // });
-  // const users = await prisma.post.findFirst({
-  //   where: {
-  //     view: {
-  //       gt: 41
-  //     },
-  //   },
-  //   orderBy: {
-  //     view: "asc"
-  //   }
-  // })
-
-  const users = await prisma.user.findFirst({
-    include: {
-      _count: {
-        select: {
-          Post: true,
-          order: true
-        }
+  const users = await prisma.post.groupBy({
+    by: ['authorId', "status"],
+    where: {
+      view: {
+        gte: 20
       }
+    },
+    // having: {
+    //   view: {
+    //     _avg: {
+    //       gte: 30
+    //     }
+    //   }
+    // },
+    _avg: {
+      view: true
+    },
+    _max: {
+      view: true
+    },
+    _min: {
+      view: true
+    },
+    _count: {
+      view: true,
+      status: true
     }
   })
-
   return responFormat(users)
 })
