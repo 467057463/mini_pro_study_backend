@@ -1,32 +1,89 @@
+@token = {{login.response.body.$.data.token}}
 
-@username_test = {{loginName.response.body.$.data.name}}
-@token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzUzNDI3MTE3LCJleHAiOjE3NTYwMTkxMTd9.ff04KXjdCgkT90vprpNvldaVz-aFwS-UZpWlKl0jCmM"
+### 获取图形验证码
+GET {{hostname}}/api/captcha
 
-### 
-# @name loginName
-GET {{hostname}}/api/revice_message
-
-###
-POST {{hostname}}/api/send_message
+### 验证图形验证码
+POST {{hostname}}/api/validate_captcha
 Content-Type: application/json
 
 {
-  "username": "{{username_test}}",
-  "guid": "{{$guid}}",
-  "random": "{{$randomInt 1 5}}",
-  "password": "{{password}}"
+  "uuid": "877ddbbb-0199-4486-8770-bcd11cf4619c",
+  "code": "1111"
 }
 
-###
-GET {{hostname}}/api/test?test={{username_test}}
 
-
-### 新建订单
-POST {{hostname}}/api/order/create
+### 注册
+# @name login
+POST  {{hostname}}/api/regist
+Content-Type: application/json
 
 {
-  "customerId": 1
+  "username": "18502087527",
+  "password": "dev123456",
+  "confirmPasswrod": "dewv123456",
+  "uuid": "877ddbbb-0199-4486-8770-bcd11cf4619c",
+  "code": "1111"
+}
+
+### 登录
+# @name login
+POST {{hostname}}/api/login
+Content-Type: application/json
+
+{
+  "username": "18502087527",
+  "password": "dev123456",
+  "uuid": "877ddbbb-0199-4486-8770-bcd11cf4619c",
+  "code": "1111"
+}
+
+### 商品列表
+GET {{hostname}}/api/products
+
+### 商品详情
+{{hostname}}/api/products/13
+
+### 添加商品
+POST {{hostname}}/api/products
+authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "面筋",
+  "price": 1.5,
+  "image": "https://picture.leigod.com/uploads/images/2025-09-12/1757672463492194.png",
+  "count": 10,
+  "categoryId": 1
 }
 
 
-// {"session_key":"cRlkOD8Sj+0viEMT5ZsdQg==","openid":"oCgld5Yo1nyWf5fuHEyaIxL8sryo"}
+### 编辑商品
+POST {{hostname}}/api/products/13
+authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "price": 8,
+  "count": 100
+}
+
+### 删除商品
+DELETE  {{hostname}}/api/products/3
+authorization: Bearer {{token}}
+
+
+### 下单
+POST {{hostname}}/api/orders
+authorization: Bearer {{token}}
+
+{
+  "productIds": [2, 4]
+}
+
+### 订单列表
+GET {{hostname}}/api/orders
+authorization: Bearer {{token}}
+
+### 地址列表
+{{hostname}}/api/addresses
