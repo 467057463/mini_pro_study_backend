@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
   //   return responFormat(null, 100001, '验证码错误')
   // }
 
-  const user = await prisma.user.findUnique({
+  const user = await prisma.superUser.findUniqueOrThrow({
     where: {
       username: username
     },
@@ -20,8 +20,10 @@ export default defineEventHandler(async (event) => {
     }
   })
 
+  console.log(user)
+
   // 验证 用户名/密码 是否正确
-  if(!user || !await verifyPassword(user.password, password)){
+  if(!user || user.password !== password){
     return responFormat(null, 100003, '用户名密码错误')
   }
 

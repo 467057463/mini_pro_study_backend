@@ -1,5 +1,4 @@
 import jwt from 'jsonwebtoken';
-import prisma from "~/lib/prisma";
 
 export default defineEventHandler(async (event) => {
   const { username, password, uuid, code } = await readBody(event)
@@ -52,5 +51,5 @@ export default defineEventHandler(async (event) => {
     maxAge: 60 * 60 * 24 * 30
   })
 
-  return responFormat(token, 0, 'registe success')
+  return responFormat({token}, 0, 'registe success')
 })

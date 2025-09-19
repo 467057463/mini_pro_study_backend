@@ -1,5 +1,4 @@
 import jwt from 'jsonwebtoken'
-import prisma from '~/lib/prisma';
 import type { H3Event } from 'h3'
 
 

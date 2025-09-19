@@ -2,7 +2,11 @@ export default defineEventHandler(async (event) => {
   const res = await prisma.category.findMany({
     where: {},
     include: {
-      products: true
+      products: {
+        where: {
+          status: 'normal'
+        }
+      }
     }
   })
 

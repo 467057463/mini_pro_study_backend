@@ -1,8 +1,19 @@
 import { PrismaClient } from '@prisma/client'
 // import { PrismaClient } from '~/generated/prisma'
 
+// @ts-ignore
+BigInt.prototype.toJSON = function () {
+  return String(this)
+}
+
 const prismaClientSingleton = () => {
-  return new PrismaClient()
+  return new PrismaClient({
+    omit: {
+      user: {
+        password: true
+      }
+    }
+  })
 }
 
 declare const globalThis: {

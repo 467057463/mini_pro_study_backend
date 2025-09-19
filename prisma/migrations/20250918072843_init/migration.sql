@@ -20,6 +20,16 @@ CREATE TABLE `Address` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
+CREATE TABLE `Profile` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `phone` BIGINT NOT NULL,
+    `userId` INTEGER NOT NULL,
+
+    UNIQUE INDEX `Profile_userId_key`(`userId`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
 CREATE TABLE `Category` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(191) NOT NULL,
@@ -36,9 +46,9 @@ CREATE TABLE `Category` (
 CREATE TABLE `Product` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(191) NOT NULL,
-    `price` INTEGER NOT NULL DEFAULT 0,
+    `price` DOUBLE NOT NULL DEFAULT 0,
     `image` VARCHAR(191) NOT NULL,
-    `count` INTEGER NOT NULL DEFAULT 0,
+    `count` INTEGER UNSIGNED NOT NULL DEFAULT 0,
     `categoryId` INTEGER NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
@@ -51,9 +61,9 @@ CREATE TABLE `Product` (
 CREATE TABLE `ProductSnapshoot` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(191) NOT NULL,
-    `price` INTEGER NOT NULL DEFAULT 0,
+    `price` DOUBLE NOT NULL DEFAULT 0,
     `image` VARCHAR(191) NOT NULL,
-    `count` INTEGER NOT NULL DEFAULT 0,
+    `count` INTEGER UNSIGNED NOT NULL DEFAULT 0,
     `originId` INTEGER NOT NULL,
     `orderId` VARCHAR(191) NOT NULL,
 
@@ -66,7 +76,7 @@ CREATE TABLE `Order` (
     `type` ENUM('selfPick', 'takeOut', 'pointPick') NOT NULL DEFAULT 'selfPick',
     `status` ENUM('normal', 'inProduction', 'dispatching', 'success') NOT NULL DEFAULT 'normal',
     `dispatchTime` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `price` INTEGER NOT NULL DEFAULT 0,
+    `price` DOUBLE NOT NULL DEFAULT 0,
     `remark` VARCHAR(191) NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
@@ -77,6 +87,9 @@ CREATE TABLE `Order` (
 
 -- AddForeignKey
 ALTER TABLE `Address` ADD CONSTRAINT `Address_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Profile` ADD CONSTRAINT `Profile_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Category` ADD CONSTRAINT `Category_parentId_fkey` FOREIGN KEY (`parentId`) REFERENCES `Category`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;

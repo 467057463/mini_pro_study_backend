@@ -10,6 +10,13 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Setting {
+  id    Int    @id @default(autoincrement())
+  key   String @unique
+  value Json
+  name  String
+}
+
 model User {
   id        Int      @id @default(autoincrement())
   username  String   @unique
@@ -18,6 +25,13 @@ model User {
   order     Order[]
   address   Address?
   profile   Profile?
+}
+
+model SuperUser {
+  id        Int      @id @default(autoincrement())
+  username  String   @unique
+  password  String
+  role      superUserRole @default(admin)
 }
 
 model Address {
@@ -48,9 +62,10 @@ model Category {
 model Product {
   id                Int                @id @default(autoincrement())
   name              String             @unique
-  price             Int                @default(0)
+  price             Float              @default(0)
   image             String
-  count             Int                @default(0)
+  count             Int                @default(0) @db.UnsignedInt
+  status            productStatus      @default(normal)
   categoryId        Int?
   category          Category?          @relation(fields: [categoryId], references: [id])
   createdAt         DateTime           @default(now())
@@ -61,9 +76,9 @@ model Product {
 model ProductSnapshoot {
   id           Int     @id @default(autoincrement())
   name         String
-  price        Int     @default(0)
+  price        Float   @default(0)
   image        String
-  count        Int     @default(0)
+  count        Int     @default(0) @db.UnsignedInt
   originId     Int
   orginProduct Product @relation(fields: [originId], references: [id])
   orderId      String
@@ -75,13 +90,24 @@ model Order {
   type         orderType          @default(selfPick)
   status       orderStatus        @default(normal)
   dispatchTime DateTime           @default(now())
-  price        Int                @default(0)
+  price        Float              @default(0)
   remark       String?
   createdAt    DateTime           @default(now())
   updatedAt    DateTime           @updatedAt
   customer     User               @relation(fields: [customerId], references: [id])
   customerId   Int
   products     ProductSnapshoot[]
+}
+
+enum superUserRole {
+  admin
+  operator
+  courier
+}
+
+enum productStatus {
+  normal
+  soldOut
 }
 
 enum orderType {
@@ -92,6 +118,7 @@ enum orderType {
 
 enum orderStatus {
   normal
+  material
   inProduction
   dispatching
   success

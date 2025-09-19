@@ -1,4 +1,39 @@
 @token = {{login.response.body.$.data.token}}
+@token ={{admin_login.response.body.$.data.token}}}
+
+### 全局配置查询
+POST {{hostname}}/api/settings/list
+
+{
+  "keys": ["phone", "test", "test2"]
+}
+
+### 新建全局配置
+POST {{hostname}}/api/settings
+
+{
+  "key": "test",
+  "name": "联系电话",
+  "value": {"type":1,"products":[1,2]}
+}
+
+### 更新全局配置
+
+POST {{hostname}}/api/settings/1
+
+{
+  "key": "test2",
+  "value": {"type":1111,"products":[1,2]}
+}
+
+### 管理员登录
+# @name admin_login
+POST {{hostname}}/api/admin_login
+
+{
+  "username": "18502087527",
+  "password": "dev123456_DEV"
+}
 
 ### 获取图形验证码
 GET {{hostname}}/api/captcha
@@ -39,7 +74,7 @@ Content-Type: application/json
 }
 
 ### 商品列表
-GET {{hostname}}/api/products
+POST  {{hostname}}/api/products/list
 
 ### 商品详情
 {{hostname}}/api/products/13
@@ -78,12 +113,26 @@ POST {{hostname}}/api/orders
 authorization: Bearer {{token}}
 
 {
-  "productIds": [2, 4]
+  "productList": {
+    "2": 2,
+    "4": 5
+  },
+  "type": "pointPick",
+  "dispatchTime": "2025-10-10 17:30:00",
+  "remark": "中辣",
+  "address": "7栋",
+  "phone": 18502087527
 }
 
-### 订单列表
-GET {{hostname}}/api/orders
+### 查询订单 - 用户侧
+Post {{hostname}}/api/orders/list
 authorization: Bearer {{token}}
 
-### 地址列表
-{{hostname}}/api/addresses
+### 更改订单状态
+
+POST {{hostname}}/api/orders/04e26dc3-ee2b-4f77-8cdc-3282293a038d/change_status
+authorization: Bearer {{token}}
+
+{
+  "status": "material"
+}
