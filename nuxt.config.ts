@@ -1,6 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  devtools: { enabled: true },
+  // devtools: { enabled: true },
   runtimeConfig: {
     wxAppId: process.env.NUXT_WX_APP_ID,
     wxAppSecret: process.env.NUXT_WX_APP_SECRET,
@@ -9,11 +9,17 @@ export default defineNuxtConfig({
   imports: {
     dirs: ['constant', 'api']
   },
+  css: ['~/assets/styles/main.scss'],
   nitro: {
     imports: {
       dirs: ['lib', 'constant', 'api']
     }
   },
+  // routeRules: {
+  //   "/admin/*": {
+  //     ssr: false,
+  //   }
+  // },
   vite: {
     resolve: {
       alias: {
@@ -21,5 +27,5 @@ export default defineNuxtConfig({
       },
     },
   },
-  modules: ["@prisma/nuxt", 'nuxt-auth-utils'],
+  modules: ["@prisma/nuxt", 'nuxt-auth-utils', '@vant/nuxt'],
 })
