@@ -13,6 +13,14 @@ export default defineNuxtPlugin((nuxtApp) => {
       if(response.status === 401){
         await nuxtApp.runWithContext(() => navigateTo('/login'))
       }
+    },
+
+    onResponse({response}){
+      if(response._data.code == 0){
+        response._data = response._data.data
+      } else {
+        return Promise.reject(response._data)
+      }
     }
   })
 

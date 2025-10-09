@@ -50,12 +50,12 @@ const data = reactive({
   code: ''
 })
 
-function handleSubmit(values){
+async function handleSubmit(values){
   console.log('submit', values, code, {
     ...data,
     uuid: code.value.data.uuid
   });
-  $fetch("/api/admin_login", {
+  const r = await $fetch("/api/admin_login", {
     method: "post",
     body: {
       ...data,
@@ -65,5 +65,6 @@ function handleSubmit(values){
     await refreshSession()
     await navigateTo('/admin')
   })
+  console.log(r)
 }
 </script>

@@ -1,104 +1,221 @@
 <template>
-  <div class="layout-wrapper">
-    <div class="header">
-      <span class="app-name">
-        小柒烧烤后台管理系统
-      </span>
-      <span class="user-info" v-if="user">
-        {{ user.username }}
-        <span @click="clier">[退出]</span>
-      </span>
-    </div>
-    <div class="content">
-      <div class="slider">
-        <el-menu>
-          <el-menu-item @click="navigateTo(`/admin/${menu.path}`)" :index="menu.key" v-for="menu in menus">
-            <el-icon>
-              <van-icon :name="menu.icon" />
-            </el-icon>
-            <span>{{menu.label}}</span>
-          </el-menu-item>
-        </el-menu>
-      </div>
-      <div class="content-wrapper">
-        <slot/>
-      </div>
-    </div>
-  </div>
+  <Html :class="theme"></Html>
+  <Title>{{ $route.meta.title ?? '管理后台' }}</Title>
+  <Transition name="slide">
+    <aside v-show="!isCollapse">
+      <header>
+        <el-space>
+          <el-avatar :size="24" src="/logo.webp" />
+          <el-text tag="b" :line-clamp="1">Nuxt Admin</el-text>
+        </el-space>
+        <el-icon @click="isCollapse = true">
+          <Memo />
+        </el-icon>
+      </header>
+    </aside>
+  </Transition>
+
+  <article>
+    <header>
+      <el-space size="large">
+        <el-icon @click="isCollapse = false" v-if="isCollapse">
+          <Memo />
+        </el-icon>
+        <el-text :line-clamp="1" truncated>
+          <el-breadcrumb>
+            <el-breadcrumb-item>仪表盘</el-breadcrumb-item>
+        </el-breadcrumb>
+        </el-text>
+      </el-space>
+
+      <el-space>
+        <el-button text circle :icon="Refresh" @click="refreshPage"></el-button>
+        <el-button text circle @click="toggle">
+          <template #icon>
+            <Transition name="rotate" mode="out-in">
+              <el-icon v-if="theme === 'dark'">
+                <Sunny />
+              </el-icon>
+              <el-icon v-else>
+                <Moon />
+              </el-icon>
+            </Transition>
+          </template>
+        </el-button>
+        <el-dropdown :teleported="false">
+          <el-space>
+            <el-avatar :size="24" src="/logo.webp" />
+            <el-text tag="b" :line-clamp="1">管理员</el-text>
+          </el-space>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item :icon="SwitchButton" @click="logout">退出</el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
+      </el-space>
+    </header>
+    <main>
+      <slot/>
+    </main>
+  </article>
 </template>
 
-<script setup>
-const { user, clear } = useUserSession();
-const menus = [
-  {
-    label: "首页",
-    key: 'main',
-    path: '',
-    icon: 'wap-home-o'
-  },
-  {
-    label: "全局配置",
-    key: 'setting',
-    path: 'setting',
-    icon: 'setting-o'
-  },
-  {
-    label: "商品管理",
-    key: 'product',
-    path: 'product',
-    icon: 'setting-o'
-  },
-  {
-    label: "订单管理",
-    key: 'order',
-    path: 'setting',
-    icon: 'setting-o'
+<script setup lang="ts">
+import { Memo, Refresh, Sunny, Moon, Setting, SwitchButton } from '@element-plus/icons-vue';
+
+const isCollapse = ref(false)
+
+const router = useRouter()
+
+// 刷新当前页面
+const refreshPage = async () => {
+  router.go(0)
+}
+
+const { clear } = useUserSession();
+function logout(){
+  navigateTo('/login')
+  clear();
+}
+
+const theme = ref('dark')
+
+const toggleTheme = () => {
+  const isDark = theme.value === 'dark'
+  theme.value = isDark ? 'light' : 'dark'
+}
+
+// 判断是否支持视图过渡，并且没有开启“减少动态效果”选项
+const isAppearanceTransition =
+    typeof document !== 'undefined' &&
+    // @ts-expect-error: Transition API
+    document.startViewTransition &&
+    !window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+
+// 切换颜色模式
+async function toggle(event: MouseEvent){
+  if (!isAppearanceTransition) {
+    return
   }
-]
+  const { clientX: x, clientY: y } = event
+  const endRadius = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y))
+
+  const transition = document.startViewTransition(async () => {
+      toggleTheme()
+      await nextTick()
+  })
+
+  transition.ready.then(() => {
+    const clipPath = [`circle(0px at ${x}px ${y}px)`, `circle(${endRadius}px at ${x}px ${y}px)`]
+    document.documentElement.animate(
+      {
+        clipPath: theme.value === 'dark' ? clipPath.reverse() : clipPath,
+      },
+      {
+        duration: 400,
+        easing: 'ease-in',
+        pseudoElement:
+          theme.value === 'dark' ? '::view-transition-old(root)' : '::view-transition-new(root)',
+      },
+    )
+  })
+}
+
 </script>
 
 <style lang="scss" scoped>
-.layout-wrapper{
-  height: 100vh;
+.slide-enter-active,
+.slide-leave-active {
+  transition: all 0.2s ease;
+}
+
+.slide-enter-from,
+.slide-leave-to {
+  width: 0;
+}
+
+.slide-enter-to,
+.slide-leave-from {
+  width: 300px;
+}
+
+
+
+.rotate-enter-active,
+.rotate-leave-active {
+    transition: all 0.2s ease;
+}
+
+.rotate-enter-from {
+    transform: rotate(270deg);
+    opacity: 0;
+}
+
+.rotate-leave-to {
+    transform: rotate(180deg);
+    opacity: 0;
+}
+
+aside {
   display: flex;
   flex-direction: column;
-}
-.header{
-  height: 60px;
-  border-bottom: 1px solid var(--el-menu-border-color);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 15px;
-  .app-name{
-    font-weight: bold;
-    font-size: 18px;
-    color: #000000;
-  }
-  .user-info{
-    font-size: 14px;
-    color: #2c2c2c;
-    span{
+  flex-shrink: 0;
+  box-sizing: border-box;
+  width: 300px;
+  height: 100%;
+  overflow: hidden;
+  background-color: inherit;
+  border-right: var(--el-border);
+  user-select: none;
+  header {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+    height: 60px;
+    padding: 0 20px;
+    background-color: inherit;
+    border-bottom: var(--el-border);
+    user-select: none;
+
+    .el-icon {
       cursor: pointer;
-      &:hover{
-        color: #000;
-        text-decoration: underline;
-      }
     }
   }
 }
-.content{
+
+article{
   display: flex;
   flex: 1;
-  .slider{
-    width: 200px;
-    .el-menu{
-      height: 100%;
+  flex-direction: column;
+  width: 0;
+  header {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+    height: 60px;
+    padding: 0 20px;
+    background-color: inherit;
+    border-bottom: var(--el-border);
+    user-select: none;
+
+    .el-icon {
+      cursor: pointer;
     }
   }
-  .content-wrapper{
+  main {
     flex: 1;
-    padding: 15px;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    overflow: auto;
+    background-color: var(--el-bg-color-page);
   }
 }
 </style>
