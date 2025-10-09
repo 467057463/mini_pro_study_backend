@@ -27,5 +27,5 @@ export default defineNuxtConfig({
       },
     },
   },
-  modules: ["@prisma/nuxt", 'nuxt-auth-utils', '@vant/nuxt'],
+  modules: ["@prisma/nuxt", 'nuxt-auth-utils', '@vant/nuxt', '@element-plus/nuxt'],
 })

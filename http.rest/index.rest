@@ -1,6 +1,9 @@
 @token = {{login.response.body.$.data.token}}
 @token ={{admin_login.response.body.$.data.token}}}
 
+### 查询配置
+{{hostname}}/api/settings
+
 ### 全局配置查询
 POST {{hostname}}/api/settings/list
 
@@ -56,7 +59,7 @@ Content-Type: application/json
 {
   "username": "18502087527",
   "password": "dev123456",
-  "confirmPasswrod": "dewv123456",
+  "confirmPasswrod": "dev123456",
   "uuid": "877ddbbb-0199-4486-8770-bcd11cf4619c",
   "code": "1111"
 }
@@ -72,6 +75,9 @@ Content-Type: application/json
   "uuid": "877ddbbb-0199-4486-8770-bcd11cf4619c",
   "code": "1111"
 }
+
+### 后台商品列表
+{{hostname}}/api/products
 
 ### 商品列表
 POST  {{hostname}}/api/products/list

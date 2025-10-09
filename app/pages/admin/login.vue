@@ -36,10 +36,11 @@
 </template>
 
 <script setup>
+const { loggedIn, fetch: refreshSession } = useUserSession()
 definePageMeta({
-  layout: false
+  layout: false,
+  middleware: ['no-auth']
 })
-
 const { data: code, refresh } = await useAPI('/captcha');
 console.log(code.value.data)
 
@@ -60,7 +61,9 @@ function handleSubmit(values){
       ...data,
       uuid: code.value.data.uuid
     }
+  }).then(async r => {
+    await refreshSession()
+    await navigateTo('/admin')
   })
 }
-
 </script>

@@ -16,7 +16,8 @@ export default defineEventHandler(async (event) => {
     select: {
       id: true,
       username: true,
-      password: true
+      password: true,
+      role: true
     }
   })
 
@@ -32,7 +33,8 @@ export default defineEventHandler(async (event) => {
   const token = jwt.sign(
     {
       id: user.id,
-      username: user.username
+      username: user.username,
+      role: user.role
     },
     runtimeConfig.jwtSecert,
     {
@@ -43,11 +45,13 @@ export default defineEventHandler(async (event) => {
   await setUserSession(event, {
     user: {
       id: user.id,
+      username: user.username,
+      role: user.role
     },
     token,
   }, {
     maxAge: 60 * 60 * 24 * 30
   })
   
-  return responFormat({ token }, 0, 'login success')
+  return responFormat({ token, role: 'customer' }, 0, 'login success')
 })

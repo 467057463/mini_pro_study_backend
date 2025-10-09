@@ -4,10 +4,10 @@ export default defineEventHandler(async (event) => {
   const { username, password, uuid, code } = await readBody(event)
 
   // 图形验证码验证
-  // const captchaCode = await captchaStorage.getItem(uuid) as string;
-  // if(!captchaCode || captchaCode.toLowerCase() !== code.toLowerCase()){
-  //   return responFormat(null, 100001, '验证码错误')
-  // }
+  const captchaCode = await captchaStorage.getItem(uuid) as string;
+  if(!captchaCode || captchaCode.toLowerCase() !== code.toLowerCase()){
+    return responFormat(null, 100001, '验证码错误')
+  }
 
   const user = await prisma.user.findUnique({
     where: {
@@ -30,7 +30,8 @@ export default defineEventHandler(async (event) => {
   const token = jwt.sign(
     {
       id: user.id,
-      username: user.username
+      username: user.username,
+      role: 'customer'
     },
     runtimeConfig.jwtSecert,
     {
@@ -41,11 +42,13 @@ export default defineEventHandler(async (event) => {
   await setUserSession(event, {
     user: {
       id: user.id,
+      username: user.username,
+      role: 'customer'
     },
     token,
   }, {
     maxAge: 60 * 60 * 24 * 30
   })
   
-  return responFormat({ token }, 0, 'login success')
+  return responFormat({ token, role: 'customer' }, 0, 'login success')
 })
