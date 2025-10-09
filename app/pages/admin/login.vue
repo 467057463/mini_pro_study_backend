@@ -49,18 +49,19 @@ const data = reactive({
   code: ''
 })
 
-function handleSubmit(values){
+async function handleSubmit(values){
   console.log('submit', values, code, {
     ...data,
     uuid: code.value.data.uuid
   });
-  $fetch("/api/admin_login", {
+  const r = await $fetch("/api/admin_login", {
     method: "post",
     body: {
       ...data,
       uuid: code.value.data.uuid
     }
   })
+  console.log(r)
 }
 
 </script>

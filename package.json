@@ -13,7 +13,10 @@
     "seed": "tsx prisma/seed.ts"
   },
   "dependencies": {
+    "@element-plus/icons-vue": "^2.3.2",
+    "@element-plus/nuxt": "^1.1.4",
     "@prisma/nuxt": "^0.3.0",
+    "element-plus": "^2.11.4",
     "jsonwebtoken": "^9.0.2",
     "nuxt": "^4.1.2",
     "nuxt-auth-utils": "^0.5.24",
