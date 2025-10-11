@@ -30,7 +30,7 @@ export default defineNuxtConfig({
       },
     },
   },
-  modules: ["@prisma/nuxt", 'nuxt-auth-utils', '@vant/nuxt', '@element-plus/nuxt'],
+  modules: ["@prisma/nuxt", 'nuxt-auth-utils', '@vant/nuxt', '@element-plus/nuxt', '@vueuse/nuxt'],
   elementPlus: {
     importStyle: false,
     defaultLocale: 'zh-cn',

@@ -12,7 +12,7 @@
       hide-required-asterisk
     >
       <el-form-item>
-        <h1>管理系统</h1>
+        <h1>Nuxt Admin</h1>
       </el-form-item>
 
       <el-form-item label="用户名" prop="username">
@@ -74,25 +74,6 @@ const data = reactive({
   code: ''
 })
 
-<<<<<<< HEAD
-function handleSubmit(values){
-  console.log('submit', values, code, {
-    ...data,
-    uuid: code.value.data.uuid
-  });
-  $fetch("/api/login", {
-    method: "post",
-    body: {
-      ...data,
-      uuid: code.value.data.uuid
-    }
-  }).then(async r => {
-    await refreshSession()
-    await navigateTo('/')
-  })
-}
-</script>
-=======
 async function handleSubmit(){
   try {
     await $form.value?.validate()
@@ -148,4 +129,3 @@ main{
   }
 }
 </style>
->>>>>>> 36464803a9cf799950f029f5186a91e0a860082a
