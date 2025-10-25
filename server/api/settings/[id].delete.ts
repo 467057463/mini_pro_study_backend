@@ -1,10 +1,10 @@
 export default defineEventHandler(async (event) => {
   const user = await useRquestUser(event, {role: 'admin'});
-  const data = await readBody(event);
+  const id = Number(getRouterParam(event, 'id'));
 
-  const res = await prisma.setting.create({
-    data
+  const res = await prisma.setting.delete({
+    where: {id}
   })
-  
+
   return responFormat(res, 0)
 })

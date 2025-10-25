@@ -22,41 +22,15 @@
                 </el-icon>
                 <span>{{item.label}}</span>
               </template>
+              <el-menu-item v-for="(child, c) in item.child" :index="`${index}-${c}`" @click="navigateTo('/admin' + child.path)">{{ child.label }}</el-menu-item>
             </el-sub-menu>
-            <!-- <el-menu-item v-else :index="`${index}`">
+            <el-menu-item @click="navigateTo('/admin' + item.path)" v-else :index="`${index}`">
               <el-icon>
                 <component :is="item.icon"/>
-              </el-icon
+              </el-icon>
               {{item.label}}
-            </el-menu-item> -->
+            </el-menu-item>
           </template>
-
-          <el-menu-item index="0" @click="navigateTo('/admin/')">
-            <el-icon><House /></el-icon>
-            首页
-          </el-menu-item>
-          <el-sub-menu index="1">
-            <template #title>
-              <el-icon><setting /></el-icon>
-              <span>系统管理</span>
-            </template>
-            <el-menu-item index="1-1" @click="navigateTo('/admin/setting')">全局配置</el-menu-item>
-            <el-menu-item index="1-2" @click="navigateTo('/admin/product')">广告配置</el-menu-item>
-          </el-sub-menu>
-          <el-sub-menu index="2">
-            <template #title>
-              <el-icon><Bowl /></el-icon>
-              <span>商品管理</span>
-            </template>
-            <el-menu-item index="2-1" @click="navigateTo('/admin/product')">商品列表</el-menu-item>
-          </el-sub-menu>
-          <el-sub-menu index="3">
-            <template #title>
-              <el-icon><CreditCard /></el-icon>
-              <span>订单管理</span>
-            </template>
-            <el-menu-item index="3-1" @click="navigateTo('/admin/product')">订单列表</el-menu-item>
-          </el-sub-menu>
         </el-menu>
       </el-scrollbar>
     </aside>

@@ -9,9 +9,10 @@ export default defineNuxtModule({
     },
   },
   async setup(options, nuxt){
-    console.log({
-      options,
-      nuxt
+    nuxt.hook('pages:extend', async(pages) => {
+      console.log('================')
+      console.log(pages)
+      console.log('>>>>>>>>>>>>>>>>')
     })
   }
 })

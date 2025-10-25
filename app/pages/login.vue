@@ -1,14 +1,16 @@
+<!-- eslint-disable vue/no-multiple-template-root -->
+<!-- eslint-disable vue/no-v-html -->
 <template>
   <Title>登录</Title>
   <main>
     <el-form 
+      ref="formRef"  
       class="login" 
       label-width="auto" 
       label-position="top" 
       size="large" 
       :model="data"
       :rules="rules"
-      ref="form"
       hide-required-asterisk
     >
       <el-form-item>
@@ -16,17 +18,17 @@
       </el-form-item>
 
       <el-form-item label="用户名" prop="username">
-        <el-input autocomplete="off" clearable v-model="data.username" />
+        <el-input v-model="data.username" autocomplete="off" clearable />
       </el-form-item>
 
       <el-form-item label="密码" prop="password">
-        <el-input autocomplete="off" clearable v-model="data.password" />
+        <el-input v-model="data.password" type="password" autocomplete="off" clearable />
       </el-form-item>
 
       <el-form-item label="验证码" prop="code">
-        <el-input autocomplete="off" clearable v-model="data.code" class="code-input">
+        <el-input v-model="data.code" autocomplete="off" clearable class="code-input">
           <template #append>
-            <span class="code" v-html="code?.captcha" @click="() => refresh()"></span>
+            <span class="code" @click="refresh" v-html="code?.captcha"/>
           </template>
         </el-input>
       </el-form-item>
@@ -46,7 +48,7 @@ definePageMeta({
 const { fetch } = useUserSession();
 const { data: code, refresh } = await useAPI<{captcha: string, uuid: string}>('/captcha');
 
-const $form = useTemplateRef('form')
+const $form = useTemplateRef('formRef')
 const rules = {
   username: [
     {
@@ -77,7 +79,7 @@ const data = reactive({
 async function handleSubmit(){
   try {
     await $form.value?.validate()
-    await useRequest('/admin_login', {
+    const user = await useRequest('/login', {
       method: 'post',
       body: {
         ...data,
@@ -85,7 +87,11 @@ async function handleSubmit(){
       }
     })
     await fetch();
-    navigateTo('/admin')
+    if(user.role === 'customer'){
+      navigateTo('/')
+    } else {
+      navigateTo('/admin')
+    }
   } catch (error) {
     console.error(error)
   }

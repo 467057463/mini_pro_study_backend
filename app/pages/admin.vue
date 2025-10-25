@@ -1,19 +1,10 @@
 <template>
-<NuxtLayout :name="layout">
+<NuxtLayout name="admin">
   <NuxtPage/>
 </NuxtLayout>
 </template>
 
 <script setup>
-const route = useRoute();
-
-const layout = computed(() => {
-  if(['admin-login'].includes(route.name)){
-    return false
-  }
-  return 'admin'
-})
-
 definePageMeta({
   layout: false
 })

@@ -16,7 +16,8 @@ export default defineEventHandler(async (event) => {
     select: {
       id: true,
       username: true,
-      password: true
+      password: true,
+      role: true
     }
   })
 
@@ -31,7 +32,7 @@ export default defineEventHandler(async (event) => {
     {
       id: user.id,
       username: user.username,
-      role: 'customer'
+      role: user.role
     },
     runtimeConfig.jwtSecert,
     {
@@ -43,12 +44,12 @@ export default defineEventHandler(async (event) => {
     user: {
       id: user.id,
       username: user.username,
-      role: 'customer'
+      role: user.role
     },
     token,
   }, {
     maxAge: 60 * 60 * 24 * 30
   })
   
-  return responFormat({ token, role: 'customer' }, 0, 'login success')
+  return responFormat({ token, role: user.role }, 0, 'login success')
 })

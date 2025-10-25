@@ -2,7 +2,7 @@
   <div>
     <el-button @click="navigateTo('/admin/product/create')">新建商品</el-button>
 
-    <el-table :data="data?.data?.list" style="width: 100%">
+    <el-table :data="data?.list" style="width: 100%">
       <el-table-column label="图片">
         <template #default="{row}">
           <el-image :src="row.image"/>
@@ -24,7 +24,12 @@
   </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
+definePageMeta({
+  title: '商品列表',
+  middleware: ['auth', 'role']
+})
+
 const { data, refresh } = await useAPI("/products")
 
 </script>

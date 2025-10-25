@@ -1,3 +1,5 @@
+import type { NuxtPage } from '@nuxt/schema'
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
@@ -18,11 +20,11 @@ export default defineNuxtConfig({
       dirs: ['lib', 'constant', 'api']
     }
   },
-  // routeRules: {
-  //   "/admin/*": {
-  //     ssr: false,
-  //   }
-  // },
+  routeRules: {
+    "/admin/**": {
+      ssr: false,
+    }
+  },
   vite: {
     resolve: {
       alias: {
@@ -30,9 +32,29 @@ export default defineNuxtConfig({
       },
     },
   },
-  modules: ["@prisma/nuxt", 'nuxt-auth-utils', '@vant/nuxt', '@element-plus/nuxt', '@vueuse/nuxt'],
+  modules: ["@prisma/nuxt", 'nuxt-auth-utils', '@vant/nuxt', '@element-plus/nuxt', '@vueuse/nuxt', '@nuxt/eslint'],
   elementPlus: {
     importStyle: false,
     defaultLocale: 'zh-cn',
   },
+  hooks: {
+    "pages:extend": function(pages){
+      function removePagesMatching(pattern: RegExp, pages: NuxtPage[] = []) {
+        const pagesToRemove: NuxtPage[] = []
+        for (const page of pages) {
+          if (page.file?.match(pattern)) {
+            pagesToRemove.push(page)
+          }
+          else {
+            removePagesMatching(pattern, page.children)
+          }
+        }
+        for (const page of pagesToRemove) {
+          pages.splice(pages.indexOf(page), 1)
+        }
+      }
+      // 移除pages中components目录自动生成的路由
+      removePagesMatching(/\/components/, pages)
+    }
+  }
 })

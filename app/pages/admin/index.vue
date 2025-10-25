@@ -5,7 +5,8 @@
     </el-card>
 
     <el-card shadow="never">
-      test
+      <button @click="counter++">+</button>
+      <button @click="counter++">-</button>
     </el-card>
   </section>
 </template>
@@ -15,17 +16,4 @@ definePageMeta({
   title: '首页',
   middleware: ['auth', 'role']
 })
-const { loggedIn, user, session } = useUserSession();
-console.log({
-  loggedIn, 
-  user,
-  session
-})
-watch(loggedIn, (val) => {
-  console.log(val)
-})
 </script>
-
-<style lang="scss" scoped>
-
-</style>

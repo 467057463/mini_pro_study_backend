@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken'
 import type { H3Event } from 'h3'
 
 
-export const useRquestUser = async(event: H3Event, opts: { statusCode?: number, message?: string } = {}) => {
+export const useRquestUser = async(event: H3Event, opts: { statusCode?: number, message?: string, role?: string } = {role: 'customer'}) => {
   const runtimeConfig = useRuntimeConfig();
   const authHeader = getHeader(event, 'authorization');
   
@@ -20,7 +20,7 @@ export const useRquestUser = async(event: H3Event, opts: { statusCode?: number, 
       id: decoded.id 
     } 
   })
-  if(!user){
+  if(!user || (user.role === 'customer' && options.role !== 'customer')){
     throw createError({
       statusCode: opts.statusCode || 401,
       message: opts.message || 'Unauthorized',
