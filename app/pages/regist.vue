@@ -24,6 +24,10 @@
         <el-input v-model="data.password" type="password" autocomplete="off" clearable />
       </el-form-item>
 
+      <el-form-item label="确认密码" prop="confirmPasswrod">
+        <el-input v-model="data.confirmPasswrod" type="confirmPasswrod" autocomplete="off" clearable />
+      </el-form-item>
+
       <el-form-item label="验证码" prop="code">
         <el-input v-model="data.code" autocomplete="off" clearable class="code-input">
           <template #append>
@@ -33,7 +37,7 @@
       </el-form-item>
 
       <el-form-item>
-        <el-button style="width: 100%" type="primary" @click="handleSubmit"> 登录 </el-button>
+        <el-button style="width: 100%" type="primary" @click="handleSubmit"> 注册 </el-button>
       </el-form-item>
     </el-form>
   </main>
@@ -44,8 +48,9 @@ definePageMeta({
   layout: 'blank',
   middleware: ['no-auth']
 })
+
 useHead({
-  title: '登录'
+  title: '注册'
 })
 
 const { fetch } = useUserSession();
@@ -65,6 +70,12 @@ const rules = {
       message: '请输入密码'
     }
   ],
+  confirmPasswrod: [
+    {
+      required: true,
+      message: '请输入密码'
+    }
+  ],
   code: [
     {
       required: true,
@@ -76,13 +87,14 @@ const rules = {
 const data = reactive({
   username: '',
   password: '',
+  confirmPasswrod: '',
   code: ''
 })
 
 async function handleSubmit(){
   try {
     await $form.value?.validate()
-    const user = await useRequest('/login', {
+    const user = await useRequest('/regist', {
       method: 'post',
       body: {
         ...data,

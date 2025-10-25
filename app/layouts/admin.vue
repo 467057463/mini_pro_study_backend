@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/no-multiple-template-root -->
 <template>
   <Title>{{ $route.meta.title ?? '管理后台' }}</Title>
   
@@ -39,7 +40,7 @@
   <article>
     <header>
       <el-space size="large">
-        <el-icon @click="isCollapse = false" v-if="isCollapse">
+        <el-icon v-if="isCollapse" @click="isCollapse = false">
           <Memo />
         </el-icon>
         <el-text :line-clamp="1" truncated>
@@ -50,12 +51,12 @@
       </el-space>
 
       <el-space>
-        <el-button text circle :icon="Refresh" @click="refreshPage"></el-button>
+        <el-button text circle :icon="Refresh" @click="refreshPage"/>
         <toggle-theme-btn/>
         <el-dropdown :teleported="false">
           <el-space>
             <el-avatar :size="24" src="/logo.webp" />
-            <el-text tag="b" :line-clamp="1">管理员</el-text>
+            <el-text tag="b" :line-clamp="1">{{user.username}}</el-text>
           </el-space>
           <template #dropdown>
             <el-dropdown-menu>
@@ -123,7 +124,7 @@ const refreshPage = async () => {
   router.go(0)
 }
 
-const { clear } = useUserSession();
+const { user, clear } = useUserSession();
 function logout(){
   navigateTo('/login')
   clear();
