@@ -1,39 +1,42 @@
 <template>
   <div class="header no-print">
-    <el-input v-model="text"/>
-    <el-button @click="handlePrint">打印</el-button>
+    <el-form>
+      <div>1群</div>
+      <el-form-item>
+        <el-input v-model="text" type="textarea" :rows="13"/>
+      </el-form-item>
+      <div>2群</div>
+      <el-form-item>
+        <el-input v-model="text2" type="textarea" :rows="13"/>
+      </el-form-item>
+      <el-form-item>
+        <el-button @click="handlePrint">打印</el-button>
+      </el-form-item>
+    </el-form>
   </div>
   <div class="print-preview">
-    <div class="item" v-for="i in 30">
+    <div class="item" v-for="(i, index) in orders" :key="index">
       <b>小柒烧烤</b>
       <div class="line">
         <span class="label">订餐同学:</span> 
-        <span class="value">1-1 小柒烧烤</span>
+        <span class="value">{{i.name}}</span>
       </div>
       <div class="line">
         <span class="label">餐品:</span> 
         <div class="product-list">
-          <div class="product">
-            <span class="product-name">玉米排骨</span> 
-            <span class="count">x1</span>
-          </div>
-          <div class="product">
-            <span class="product-name">玉米排骨</span> 
-            <span class="count">x1</span>
+          <div class="product" v-for="p in i.products">
+            <span class="product-name"></span> 
+            <span class="count">{{ p }}</span>
           </div>
         </div>
       </div>
       <div class="line">
         <span class="label">楼栋:</span>
-        <span class="value">7栋</span>
+        <span class="value">{{ i.localtion }}</span>
       </div>
-      <div class="line">
+      <!-- <div class="line">
         <span class="label">备注：</span>
         <div class="remark">不要胡萝卜,不要香菜</div>
-      </div>
-      <!-- <div class="line bottom">
-        <span class="label">客服电话</span>
-        <span class="value">17683760916</span>
       </div> -->
     </div>
   </div>
@@ -43,15 +46,93 @@
 definePageMeta({
   layout: "blank"
 })
+const nameMap = ['name', 'products', 'localtion']
+const productNameMap = ['name', 'count']
 const text = ref('')
+const text2 = ref('')
+
+const orders = computed(() => {
+  let order1 = text.value.split(/\n/g);
+  order1 = order1.filter(Boolean)
+  .map(l => {
+    return l.replace(/^(\d)+\.\s+/, '1-$1.')
+  })
+  order1 = order1.map(l => {
+    const ary = l.split(/\s+/g);
+    console.log(ary)
+    return ary.reduce((prev, item ,i) => {
+      const name = nameMap[i];
+      if(name === 'products'){
+        item = item.split(/\/\d*/g);
+      }
+      return {
+        ...prev,
+        [name]: item
+      }
+    }, {});
+  })
+
+  let order2 = text2.value.split(/\n/g);
+  order2 = order2.filter(Boolean)
+  .map(l => {
+    return l.replace(/^(\d)+\.\s+/, '2-$1.')
+  })
+  order2 = order2.map(l => {
+    const ary = l.split(/\s+/g);
+    console.log(ary)
+    return ary.reduce((prev, item ,i) => {
+      const name = nameMap[i];
+      if(name === 'products'){
+        item = item.split(/\/\d*/g);
+      }
+      // if(name === 'products'){
+      //   const ary = item.split(/\/\d*/g);
+      //   const list = ary.map(p => {
+      //     return p.split(/[xX]\d+/)
+      //   })
+      //   item = list.reduce((prev, n, i)=> {
+      //     return {
+      //       ...prev,
+      //       [productNameMap[i]]: n ?? 1
+      //     }
+      //   }, {})
+      // }
+      return {
+        ...prev,
+        [name]: item
+      }
+    }, {});
+  })
+  return [...order1, ...order2]
+})
+
+watch(orders, (val) => {
+  console.log('orders', val)
+})
 
 function handlePrint(){
+  console.log('orders', orders)
+  const errors = orders.value.filter(o => {
+    return !o.name || !o.products.length || !o.localtion
+  })
+  if(errors.length){
+    console.log(errors)
+    alert(JSON.stringify(errors))
+    return
+  }
   window.print()
 }
 </script>
 
 <style lang="scss">
+.header{
+  width: 250px;
+  border-right: 1px solid #eee;
+  // position: fixed;
+  // height: 100%;
+}
 .print-preview{
+  // margin-left: 260px;
   width: 1050px;
   height: 1485px;
   display: grid;
@@ -70,6 +151,7 @@ function handlePrint(){
     width: 100%;
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
     .label{
       flex-shrink: 0;
     }
@@ -132,6 +214,7 @@ function handlePrint(){
   .print-preview {
     // width: 100%;
     height: 100%;
+    // margin-left: 0;
   }
 }
 </style>
