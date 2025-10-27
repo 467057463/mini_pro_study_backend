@@ -25,7 +25,7 @@
       </el-form-item>
 
       <el-form-item label="确认密码" prop="confirmPasswrod">
-        <el-input v-model="data.confirmPasswrod" type="confirmPasswrod" autocomplete="off" clearable />
+        <el-input v-model="data.confirmPasswrod" type="password" autocomplete="off" clearable />
       </el-form-item>
 
       <el-form-item label="验证码" prop="code">
