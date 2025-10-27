@@ -149,7 +149,7 @@ const text = ref<string>(`2. Qiyyiqq 玉米排骨 5栋
 9. WAHH💖 玉米排骨 2栋
 10. iiiovo 玉米排骨 5栋
 11. Xxi 玉米排骨 5栋
-12. 柠檬汽水糖 玉米排骨x3/莲藕排骨x2 5栋
+12. 柠檬汽水糖 玉米排骨/莲藕排骨 5栋
 13. 绥 莲藕排骨 5栋
 14. 🍒 玉米排骨 5栋`)
 // const text2 = ref<string>('')
