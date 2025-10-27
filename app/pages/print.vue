@@ -40,7 +40,7 @@
       </li>
     </ul>
   </div>
-  <div class="print-preview" v-if="false">
+  <div class="print-preview">
     <template v-for="(i, index) in orders" :key="index">
       <template v-for="(tp, tpi) in i.products" :key="tpi">
         <div class="item">
@@ -50,15 +50,23 @@
             <span class="value">{{i.name}}</span>
           </div>
           <div class="line">
+            <span class="label">订单编号:</span> 
+            <span class="value">{{i.orderNum}}</span>
+          </div>
+          <div class="line">
+            <span class="label">下单日期:</span> 
+            <span class="value">{{i.createTime}}</span>
+          </div>
+          <div class="line">
             <span class="label">餐品:</span> 
             <div class="product-list">
               <div v-for="(p, pi) in i.products" :key="pi" class="product" :class="{active: pi === tpi}">
                 <span class="product-name">{{ p.name }}</span> 
-                <span class="count">{{ p.count}}</span>
+                <span class="count" v-if="pi === tpi && i.products.length > 1">*</span>
               </div>
             </div>
           </div>
-          <div v-if="i.products.length > 1">您共点了{{ i.products.length }}份，当前第{{ tpi + 1 }}份</div>
+          <!-- <div v-if="i.products.length > 1">您共点了{{ i.products.length }}份，当前第{{ tpi + 1 }}份</div> -->
           <div class="line">
             <span class="label">楼栋:</span>
             <span class="value">{{ i.localtion }}</span>
@@ -141,7 +149,7 @@ const text = ref<string>(`2. Qiyyiqq 玉米排骨 5栋
 9. WAHH💖 玉米排骨 2栋
 10. iiiovo 玉米排骨 5栋
 11. Xxi 玉米排骨 5栋
-12. 柠檬汽水糖 玉米排骨 5栋
+12. 柠檬汽水糖 玉米排骨x3/莲藕排骨x2 5栋
 13. 绥 莲藕排骨 5栋
 14. 🍒 玉米排骨 5栋`)
 // const text2 = ref<string>('')
@@ -261,7 +269,7 @@ const orders = computed(() => {
       const _index = index + 1;
       return {
         ...i,
-        createTime: dayjs().format("YYYY-MM-DD") + " 11:30",
+        createTime: dayjs().format("YYYY-MM-DD"),
         orderNum: dayjs().format("YYYYMMDD") + (_index < 10 ? `0${_index}` : _index)
       }
     })
@@ -315,7 +323,7 @@ function handlePrint(){
   console.log(localtionOrderArray.value, localtionProductArray.value)
   console.log(productArray.value)
 
-  // window.print()
+  window.print()
 }
 </script>
 

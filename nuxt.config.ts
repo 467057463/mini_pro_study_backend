@@ -21,6 +21,9 @@ export default defineNuxtConfig({
     }
   },
   routeRules: {
+    "/print": {
+      ssr: false,
+    },
     "/admin/**": {
       ssr: false,
     }
