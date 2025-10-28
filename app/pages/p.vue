@@ -3,13 +3,26 @@
     <div class="actions no-print">
       <el-button @click="handlePrint">test</el-button>
     </div>
-    <table>
-      <tbody>
-        <tr v-for="i in 2" :key="i">
-          <td v-for="a in 3" :key="a">{{ i }} - {{ a }}</td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="table-wrapper">
+      <table>
+        <tbody>
+          <tr v-for="i in 4" :key="i">
+            <td v-for="a in 3" :key="a">{{ i }} - {{ a }}</td>
+          </tr>
+          <tr>
+            <td>111</td>
+            <td>111</td>
+          </tr>
+        </tbody>
+      </table>
+      <!-- <table>
+        <tbody>
+          <tr v-for="i in 2" :key="i">
+            <td v-for="a in 3" :key="a">{{ i }} - {{ a }}</td>
+          </tr>
+        </tbody>
+      </table> -->
+    </div>
   </Body>
 </template>
 
@@ -29,14 +42,17 @@ function handlePrint(){
   height: 100%;
   overflow: auto;
 }
+.table-wrapper{
+  width: 100%;
+}
 table{
   width: 100%;
-  height: 100vh;
+  // height: 100vh;
   border-collapse: collapse;
   line-height: 1;
-  // tr{
-  //   height: 33.3%;
-  // }
+  tr{
+    height: calc(100vh/3);
+  }
   td {
     border-left: 1px solid #ccc;
     border-top: 1px solid #ccc;
