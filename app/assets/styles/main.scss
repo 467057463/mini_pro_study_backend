@@ -2,7 +2,7 @@
 html{
   height: 100%;
 }
-body{
+body:not(.p){
   // position: fixed;
   box-sizing: border-box;
   margin: 0;
@@ -25,4 +25,10 @@ body{
   & + .el-table{
     margin-top: 10px;
   }
+}
+
+body.p{
+  margin: 0;
+  padding: 0;
+  display: flex;
 }
