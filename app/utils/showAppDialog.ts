@@ -2,7 +2,7 @@ import {  render  } from "vue";
 import type{ VNode  } from "vue";
 import BaseModal from "~/components/BaseModal.vue";
 
-export function showDialog(component: VNode, {prop, ...res} = {prop: {}}){
+export function showAppDialog(component: VNode, {prop, ...res} = {prop: {}}){
   const { promise, resolve } = promiseWithResolver();
   
   let container: HTMLDivElement = document.createElement('div')

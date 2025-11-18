@@ -92,8 +92,10 @@ definePageMeta({
 const nameMap = ['name', 'products', 'localtion', 'remark'];
 const productNameMap = ['name', 'count'];
 const nameKey = [
-  {key: ['玉米'], name: '玉米排骨'},
-  {key: ['莲藕'], name: '莲藕排骨'},
+  {key: ['玉米'], name: '玉米胡萝卜淮山排骨汤'},
+  {key: ['莲藕'], name: '莲藕排骨汤'},
+  {key: ['白萝卜'], name: '白萝卜玉米枸杞排骨汤'},
+  {key: ['西红柿'], name: '西红柿鸡蛋汤豆腐青菜汤'},
 ];
 const numberMap = {
   '一':1,
@@ -120,30 +122,20 @@ const numberMap = {
 const data = ref([
   {
     label: '群1',
-    value: `2. Qiyyiqq 玉米排骨 5栋
-3. iueee   玉米排骨  五栋
-4. დ᭄ꦿ挽迪꧔ꦿ℘ 玉米排骨 3栋
-5. 一颗柠檬 玉米排骨  5栋
-6. 不说话的耳朵  莲藕排骨 9栋
-7. 24 玉米排骨 2栋
-8. ꒰ঌ千汐想回家໒꒱ 莲藕排骨 2栋
-9. WAHH💖 玉米排骨 2栋
-10. iiiovo 玉米排骨 5栋
-11. Xxi 玉米排骨 5栋
-12. 柠檬汽水糖 玉米排骨x3/莲藕排骨x2 5栋
-13. 绥 莲藕排骨 5栋
-14. 🍒 玉米排骨 5栋`
+    value: `2. 柠檬汽水糖 白萝卜排骨汤 五栋
+3. 徵 西红柿鸡蛋豆腐青菜汤 五栋
+4. iueee 玉米胡萝卜排骨汤 五栋 不要玉米
+5. WAHH💖  玉米胡萝卜排骨汤 二栋
+6. ꒰ঌ千汐想回家໒꒱  玉米胡萝卜排骨汤 2栋 不要玉米
+7. to_be_number万. 白萝卜排骨汤x1/玉米胡萝卜排骨汤x1 5栋 不要胡萝卜多要一份米饭
+8. 粥粥不喝粥 白萝卜排骨汤 五栋
+9. 孽白 西红柿鸡蛋汤x2/玉米胡萝卜排骨汤x2 11栋 多要一份米饭
+10. Alie 白萝卜排骨汤 11栋`
   },
   {
     label: '群2',
-    value: `2. 安笙 玉米胡萝卜淮山排骨汤 2栋
-3. 蛋 玉米排骨汤 二栋
-4. 四叶草 玉米排骨汤 11
-5. 圆圈oᐝ 玉米排骨汤x2 11栋
-6. Y.  玉米排骨汤 11栋
-7. Co6bl 排骨莲藕汤 11
-8. 蛋 莲藕汤 二栋
-9. L. 玉米排骨汤 九栋`
+    value: `2. 睡到自然醒 白萝卜排骨汤x2 2栋
+4. 蛋  胡萝卜玉米山药汤 二栋`
   }
 ])
 
@@ -353,6 +345,7 @@ function handlePrint(){
 .table-wrapper{
   width: 100%;
   padding-left: 350px;
+  // opacity: 0.1;
 }
 table{
   width: 100%;

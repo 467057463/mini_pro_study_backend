@@ -73,7 +73,7 @@ const { data, refresh } = await useAPI("/settings", {
 })
 
 function handleCreate(){
-  const { promise } = showDialog(CreateForm, {
+  const { promise } = showAppDialog(CreateForm, {
     title: '新建配置',
   })
    
@@ -89,7 +89,7 @@ function handleCreate(){
 }
 
 function handleEdit(data){
-  const { promise } = showDialog(CreateForm, {
+  const { promise } = showAppDialog(CreateForm, {
     title: '新建配置',
     prop: data
   })
